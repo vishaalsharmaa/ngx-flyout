@@ -18,6 +18,14 @@
   ],
   "license": "MIT",
   "author": "Vishal Sharma",
+  "homepage": "https://github.com/vishaalsharmaa/ngx-flyout#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vishaalsharmaa/ngx-flyout.git"
+  },
+  "bugs": {
+    "url": "https://github.com/vishaalsharmaa/ngx-flyout/issues"
+  },
   "peerDependencies": {
     "@angular/common": ">=19.0.0 <22.0.0",
     "@angular/core": ">=19.0.0 <22.0.0"
