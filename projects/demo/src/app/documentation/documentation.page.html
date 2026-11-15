@@ -1,0 +1,454 @@
+<main class="container py-5">
+  <!-- Intro -->
+  <header class="mb-5">
+    <h1 class="display-5 fw-semibold">ngx-flyout</h1>
+    <p class="lead text-body-secondary">
+      A side panel for Angular that opens from the right, over your app, while the page behind it stays in
+      view. Give it a heading, put anything inside, and get Cancel / OK buttons for free.
+    </p>
+    <div class="d-flex flex-wrap gap-2">
+      <button type="button" class="btn btn-primary btn-lg" (click)="tryIt.open()">Try it</button>
+      <a class="btn btn-outline-primary btn-lg" routerLink="/documentation" fragment="getting-started">Get started</a>
+      <a class="btn btn-outline-secondary btn-lg" routerLink="/examples">See all examples</a>
+    </div>
+  </header>
+
+  <div class="row g-5">
+    <!-- On this page -->
+    <aside class="col-lg-3 d-none d-lg-block">
+      <nav class="sticky-lg-top" style="top: 5rem" aria-label="On this page">
+        <div class="small fw-semibold text-body-secondary text-uppercase mb-2">On this page</div>
+        <ul class="nav flex-column">
+          @for (item of toc; track item.id) {
+            <li class="nav-item">
+              <a class="nav-link px-0 py-1" routerLink="/documentation" [fragment]="item.id">{{ item.label }}</a>
+            </li>
+          }
+        </ul>
+      </nav>
+    </aside>
+
+    <div class="col-lg-9">
+      <!-- What -->
+      <section id="what" class="mb-5">
+        <h2 class="h3 fw-semibold">What is a flyout?</h2>
+        <p>
+          A flyout is a panel that slides in from the edge of the screen. Think of the notification panel on your
+          phone, or the "details" panel that opens when you click a row in an email app or a file manager.
+        </p>
+        <p class="mb-0">
+          ngx-flyout gives you exactly that as one Angular component. It covers the full height of the screen on
+          the right and dims the page behind it, and it can slide in if you like. On phones it fills the whole
+          screen.
+        </p>
+      </section>
+
+      <!-- Why your product needs one -->
+      <section id="why-flyout" class="mb-5">
+        <h2 class="h3 fw-semibold">Why your product should have a flyout</h2>
+        <p>
+          Every time you send someone to a new page or throw a popup in their face, they lose their place. A flyout
+          lets them do a quick job <em>next to</em> what they were looking at, then carry on.
+        </p>
+        <div class="row g-3">
+          <div class="col-md-6">
+            <div class="card h-100">
+              <div class="card-body">
+                <h3 class="h6 fw-semibold">People keep their place</h3>
+                <p class="card-text small mb-0">
+                  The page stays in the background. Nobody has to scroll back to where they were or wonder
+                  which row they clicked.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card h-100">
+              <div class="card-body">
+                <h3 class="h6 fw-semibold">Fewer interruptions</h3>
+                <p class="card-text small mb-0">
+                  A popup says "stop and answer me". A flyout says "here's some help, take your time". It feels
+                  like part of the page, not a roadblock.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card h-100">
+              <div class="card-body">
+                <h3 class="h6 fw-semibold">Room for real content</h3>
+                <p class="card-text small mb-0">
+                  It is as tall as the screen and scrolls, so a full form, a list of details or a set of settings
+                  fits without cramming.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card h-100">
+              <div class="card-body">
+                <h3 class="h6 fw-semibold">Faster everyday tasks</h3>
+                <p class="card-text small mb-0">
+                  Quick views, quick edits and quick adds take one click to open and one click to close. No page
+                  loads, no lost filters, no back button.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Flyout vs modal -->
+      <section id="vs-modal" class="mb-5">
+        <h2 class="h3 fw-semibold">Flyout or modal?</h2>
+        <p>
+          Both float above your page, but they do different jobs. A <strong>modal</strong> is a box in the middle of
+          the screen that asks for a decision right now. A <strong>flyout</strong> is a side panel that helps with
+          the task the user is already doing.
+        </p>
+        <div class="table-responsive mb-3">
+          <table class="table table-bordered align-middle mb-0">
+            <thead class="table-light">
+              <tr>
+                <th scope="col"></th>
+                <th scope="col">Flyout</th>
+                <th scope="col">Modal</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">Purpose</th>
+                <td>Helps with the current task</td>
+                <td>Asks for a decision before going on</td>
+              </tr>
+              <tr>
+                <th scope="row">Feels like</th>
+                <td>Part of the page</td>
+                <td>A stop sign</td>
+              </tr>
+              <tr>
+                <th scope="row">The page behind</th>
+                <td>Stays visible as a reference</td>
+                <td>Mostly hidden; attention on the box</td>
+              </tr>
+              <tr>
+                <th scope="row">Amount of content</th>
+                <td>A lot: details, forms, lists</td>
+                <td>A little: a question and a couple of buttons</td>
+              </tr>
+              <tr>
+                <th scope="row">How often</th>
+                <td>All the time, for everyday tasks</td>
+                <td>Rarely, for important moments</td>
+              </tr>
+              <tr>
+                <th scope="row">Good for</th>
+                <td>Quick views, edit forms, filters, settings, notifications</td>
+                <td>"Delete this?", warnings, short choices</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="row g-3">
+          <div class="col-md-6">
+            <div class="card h-100 border-success-subtle">
+              <div class="card-body">
+                <h3 class="h6 fw-semibold text-success-emphasis">Use a flyout when…</h3>
+                <ul class="small mb-0">
+                  <li>the user needs extra information about something on the page</li>
+                  <li>the task is quick but has more than a line or two of content</li>
+                  <li>seeing the page behind helps (e.g. changing table columns and watching the table update)</li>
+                  <li>it happens often, like opening a row or checking notifications</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card h-100 border-warning-subtle">
+              <div class="card-body">
+                <h3 class="h6 fw-semibold text-warning-emphasis">Use a modal when…</h3>
+                <ul class="small mb-0">
+                  <li>you must have an answer before anything else happens</li>
+                  <li>the action is risky or can't be undone, like deleting</li>
+                  <li>the message is short: a warning, a confirmation, a yes / no</li>
+                  <li>it should happen rarely, so it still gets noticed</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="alert alert-info mt-3 mb-0">
+          <strong>Rule of thumb:</strong> reach for a flyout for longer or everyday interactions. Keep modals short,
+          simple and rare.
+          <span class="d-block small mt-1">
+            Further reading:
+            <a href="https://composedesign.ila.cegid.com/blog/modal-vs-flyout/" target="_blank" rel="noopener">
+              Usage of overlay types within a product</a>
+            (Compose Design).
+          </span>
+        </div>
+      </section>
+
+      <!-- Use cases -->
+      <section id="use-cases" class="mb-5">
+        <h2 class="h3 fw-semibold">Use cases</h2>
+        <div class="list-group">
+          <div class="list-group-item">
+            <div class="fw-semibold">Quick view of a table row</div>
+            <div class="small text-body-secondary">
+              Click an order, invoice or user and see the key details without opening a full page.
+            </div>
+          </div>
+          <div class="list-group-item">
+            <div class="fw-semibold">Edit or quick-add forms</div>
+            <div class="small text-body-secondary">Edit a record or add a new one while the list stays visible.</div>
+          </div>
+          <div class="list-group-item">
+            <div class="fw-semibold">Filters and view settings</div>
+            <div class="small text-body-secondary">
+              Pick filters or table columns and watch the page update behind the panel.
+            </div>
+          </div>
+          <div class="list-group-item">
+            <div class="fw-semibold">Notifications and activity</div>
+            <div class="small text-body-secondary">A scrollable list that can grow without taking over the page.</div>
+          </div>
+          <div class="list-group-item">
+            <div class="fw-semibold">Help and details</div>
+            <div class="small text-body-secondary">Explain a feature or show more information next to where it is used.</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Why ngx-flyout -->
+      <section id="why-ngx-flyout" class="mb-5">
+        <h2 class="h3 fw-semibold">Why ngx-flyout?</h2>
+        <p>You could build a side panel yourself. Here is what you get without writing any of it:</p>
+        <ul class="list-group list-group-flush border rounded">
+          <li class="list-group-item">
+            <strong>Zero dependencies.</strong> Only Angular itself. No Angular CDK, no Material, no extra CSS file.
+          </li>
+          <li class="list-group-item">
+            <strong>Built on the browser's own <code>&lt;dialog&gt;</code>.</strong> It always shows on top of
+            everything, even from inside a small or scrolling component. No z-index fights.
+          </li>
+          <li class="list-group-item">
+            <strong>Accessible out of the box.</strong> Keyboard focus moves in and comes back, Escape closes it, and
+            screen readers announce the heading.
+          </li>
+          <li class="list-group-item">
+            <strong>Small.</strong> Around 5 kB gzipped, and removed from your bundle if you don't use it.
+          </li>
+          <li class="list-group-item">
+            <strong>Modern Angular.</strong> Standalone component, signals, <code>[(opened)]</code> two-way binding.
+            Works with Angular 19, 20 and 21.
+          </li>
+          <li class="list-group-item">
+            <strong>Easy to theme.</strong> Change the colour, width or speed with a CSS variable. It uses your app's
+            font.
+          </li>
+          <li class="list-group-item">
+            <strong>Safe for server-side rendering.</strong> Browser-only code runs only in the browser.
+          </li>
+        </ul>
+      </section>
+
+      <!-- Getting started -->
+      <section id="getting-started" class="mb-5">
+        <h2 class="h3 fw-semibold">Getting started</h2>
+        <p>Three steps, about two minutes.</p>
+
+        <h3 class="h6 fw-semibold mt-4">1. Install</h3>
+        <app-code-block lang="Terminal" [code]="installCode" />
+
+        <h3 class="h6 fw-semibold mt-4">2. Import it in your component</h3>
+        <app-code-block lang="TS" [code]="importCode" />
+
+        <h3 class="h6 fw-semibold mt-4">3. Add a button and a flyout</h3>
+        <app-code-block lang="HTML" [code]="firstFlyoutCode" />
+
+        <p class="mt-3 mb-0">
+          That's it. Clicking the button opens the flyout; Cancel, ×, Escape or OK close it. Add
+          <code>animation="slide"</code> to make it slide in and out.
+          Want more? <a routerLink="/examples">See the examples</a>.
+        </p>
+      </section>
+
+      <!-- Open / close -->
+      <section id="open-close" class="mb-5">
+        <h2 class="h3 fw-semibold">Opening and closing</h2>
+        <p>Pick whichever fits your code. They all stay in sync.</p>
+
+        <h3 class="h6 fw-semibold mt-4">Template reference (simplest)</h3>
+        <app-code-block lang="HTML" [code]="templateRefCode" />
+
+        <h3 class="h6 fw-semibold mt-4">Two-way binding</h3>
+        <p class="small text-body-secondary">
+          When the open state lives in your component. Use <code>[(opened)]</code>, not one-way
+          <code>[opened]</code>, so your value updates when the user closes the flyout.
+        </p>
+        <app-code-block lang="HTML" [code]="twoWayCode" />
+
+        <h3 class="h6 fw-semibold mt-4">From TypeScript</h3>
+        <p class="small text-body-secondary">For example, close it after a save finishes.</p>
+        <app-code-block lang="TS" [code]="viewChildCode" />
+
+        <div class="alert alert-secondary mt-3 mb-0 small">
+          <code>open()</code>, <code>close()</code> and <code>toggle()</code> never fire <code>(confirm)</code> or
+          <code>(cancel)</code>. Those only fire when the user clicks or presses a key.
+        </div>
+      </section>
+
+      <!-- API -->
+      <section id="api" class="mb-5">
+        <h2 class="h3 fw-semibold">API reference</h2>
+
+        <h3 class="h5 mt-4">Inputs</h3>
+        <div class="table-responsive">
+          <table class="table table-sm align-middle">
+            <thead class="table-light">
+              <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Type</th>
+                <th scope="col">Default</th>
+                <th scope="col">What it does</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (row of inputs; track row.name) {
+                <tr>
+                  <td><code>{{ row.name }}</code></td>
+                  <td class="small">{{ row.type }}</td>
+                  <td class="small"><code>{{ row.defaultValue }}</code></td>
+                  <td class="small">{{ row.description }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+
+        <h3 class="h5 mt-4">Outputs</h3>
+        <div class="table-responsive">
+          <table class="table table-sm align-middle">
+            <thead class="table-light">
+              <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Value</th>
+                <th scope="col">When</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (row of outputs; track row.name) {
+                <tr>
+                  <td><code>{{ row.name }}</code></td>
+                  <td class="small"><code>{{ row.type }}</code></td>
+                  <td class="small">{{ row.description }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+
+        <h3 class="h5 mt-4">Methods</h3>
+        <ul class="small">
+          <li><code>open()</code>: opens the flyout.</li>
+          <li><code>close()</code>: closes it.</li>
+          <li><code>toggle()</code>: opens it if closed, closes it if open.</li>
+        </ul>
+
+        <h3 class="h5 mt-4">Content slots</h3>
+        <ul class="small mb-0">
+          <li><strong>Default:</strong> anything you put inside <code>&lt;ngx-flyout&gt;</code> becomes the body.</li>
+          <li>
+            <code>ngxFlyoutIcon</code>: an icon shown next to the heading
+            (import <code>NgxFlyoutIcon</code>).
+          </li>
+          <li>
+            <code>ngxFlyoutFooter</code>: your own footer instead of Cancel / OK
+            (import <code>NgxFlyoutFooter</code>).
+          </li>
+        </ul>
+      </section>
+
+      <!-- Styling -->
+      <section id="styling" class="mb-5">
+        <h2 class="h3 fw-semibold">Styling</h2>
+        <p>Set CSS variables for all flyouts or for just one. No Sass, no theme files.</p>
+        <app-code-block lang="CSS" [code]="stylingCode" />
+
+        <div class="table-responsive mt-3">
+          <table class="table table-sm align-middle">
+            <thead class="table-light">
+              <tr>
+                <th scope="col">Variable</th>
+                <th scope="col">Default</th>
+                <th scope="col">Controls</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (row of cssVars; track row.name) {
+                <tr>
+                  <td><code>{{ row.name }}</code></td>
+                  <td class="small"><code>{{ row.defaultValue }}</code></td>
+                  <td class="small">{{ row.description }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+
+        <h3 class="h6 fw-semibold mt-3">Dark mode</h3>
+        <p class="small text-body-secondary">Set the background and text colour; the greys and lines follow.</p>
+        <app-code-block lang="CSS" [code]="darkModeCode" />
+      </section>
+
+      <!-- Defaults -->
+      <section id="defaults" class="mb-5">
+        <h2 class="h3 fw-semibold">App-wide defaults</h2>
+        <p>
+          Optional. Change the defaults for every flyout in one place, for example to translate the button text.
+          Anything you set on a single flyout still wins.
+        </p>
+        <app-code-block lang="TS" [code]="defaultsCode" />
+      </section>
+
+      <!-- Accessibility -->
+      <section id="accessibility" class="mb-5">
+        <h2 class="h3 fw-semibold">Accessibility</h2>
+        <ul class="mb-0">
+          <li>Opens as a real modal dialog: the page behind can't be clicked or tabbed into.</li>
+          <li>Focus moves into the flyout when it opens and returns to the button that opened it.</li>
+          <li>Escape closes it, and screen readers read the heading and sub-heading.</li>
+          <li>The × button has a label ("Close") you can translate.</li>
+          <li>All buttons are at least 44px tall, easy to hit on touch screens.</li>
+          <li>The slide animation is off by default, and skipped for people who ask their device for reduced motion.</li>
+        </ul>
+      </section>
+
+      <!-- Browsers -->
+      <section id="browsers">
+        <h2 class="h3 fw-semibold">Browser support</h2>
+        <p class="mb-0">
+          Works in all current versions of Chrome, Edge, Firefox and Safari. The optional slide animation uses newer
+          CSS; in a browser without it, the flyout simply appears without sliding. Firefox slides it in but closes it
+          at once.
+        </p>
+      </section>
+    </div>
+  </div>
+</main>
+
+<!-- "Try it" demo -->
+<ngx-flyout #tryIt heading="Hello from ngx-flyout" subheading="This is the whole component" confirmLabel="Got it" animation="slide">
+  <p>The page is still there behind this panel. Close it with:</p>
+  <ul>
+    <li>the <strong>Got it</strong> or <strong>Cancel</strong> button</li>
+    <li>the <strong>×</strong> in the corner</li>
+    <li>the <strong>Escape</strong> key</li>
+  </ul>
+  <p class="mb-0">
+    Everything inside this panel is your own content, passed in with <code>ng-content</code>.
+  </p>
+</ngx-flyout>

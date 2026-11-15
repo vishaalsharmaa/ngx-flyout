@@ -1,0 +1,276 @@
+// Theming
+// -------
+// Public custom properties (set them on :root, a wrapper, or a single <ngx-flyout>):
+//
+//   --ngx-flyout-accent      icon tile and primary button (default #0f6f8c)
+//   --ngx-flyout-on-accent   text on the primary button (default #fff)
+//   --ngx-flyout-bg          panel background (default #fff)
+//   --ngx-flyout-ink         text color (default #1b2230)
+//   --ngx-flyout-muted       sub-heading and × color (derived from ink)
+//   --ngx-flyout-border      divider lines (derived from ink)
+//   --ngx-flyout-backdrop    color over the app (default rgba(15, 23, 42, 0.45))
+//   --ngx-flyout-width       panel width (default 440px, never wider than the screen)
+//   --ngx-flyout-radius      button corner radius (default 8px)
+//   --ngx-flyout-duration    slide duration when animation="slide" (default 280ms)
+//
+// For dark mode, set --ngx-flyout-bg and --ngx-flyout-ink; the derived shades follow.
+
+:host {
+  display: contents;
+}
+
+// The <dialog> covers the whole viewport and acts as the backdrop.
+// The visible flyout is the panel inside it.
+.ngx-flyout {
+  --_accent: var(--ngx-flyout-accent, #0f6f8c);
+  --_on-accent: var(--ngx-flyout-on-accent, #ffffff);
+  --_bg: var(--ngx-flyout-bg, #ffffff);
+  --_ink: var(--ngx-flyout-ink, #1b2230);
+  --_muted: var(--ngx-flyout-muted, color-mix(in srgb, var(--_ink) 72%, var(--_bg)));
+  --_line: var(--ngx-flyout-border, color-mix(in srgb, var(--_ink) 12%, var(--_bg)));
+  --_backdrop: var(--ngx-flyout-backdrop, rgba(15, 23, 42, 0.45));
+  --_width: var(--ngx-flyout-width, 440px);
+  --_radius: var(--ngx-flyout-radius, 8px);
+  --_duration: var(--ngx-flyout-duration, 280ms);
+
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  background: transparent;
+  color: var(--_ink);
+  font: inherit;
+
+  &::backdrop {
+    background: transparent;
+  }
+
+  &[open] {
+    background: var(--_backdrop);
+  }
+}
+
+// Panel
+// -----
+// Attached to the right edge, full height.
+
+.ngx-flyout__panel {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: min(var(--_width), 100%);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  background: var(--_bg);
+  box-shadow: -12px 0 40px rgba(15, 23, 42, 0.18);
+}
+
+// Slide animation (animation="slide")
+// -----------------------------------
+// Opening: the panel starts just off the right edge (via @starting-style) and eases into place.
+// Closing: it eases back out while the backdrop fades. Without animation, it simply appears.
+
+.ngx-flyout--slide {
+  // Fade the backdrop in.
+  transition: background-color var(--_duration) ease-out;
+
+  .ngx-flyout__panel {
+    transform: translateX(100%);
+    // Closing: speed up as it leaves.
+    transition: transform calc(var(--_duration) * 0.85) cubic-bezier(0.4, 0, 1, 1);
+  }
+
+  &[open] .ngx-flyout__panel {
+    transform: none;
+    // Opening: start fast, settle gently.
+    transition: transform var(--_duration) cubic-bezier(0.16, 1, 0.3, 1);
+  }
+}
+
+// Keep the dialog rendered (and in the top layer) while the panel slides out.
+// Only where `overlay` is supported; elsewhere closing is instant, which avoids a flash.
+@supports (overlay: auto) {
+  .ngx-flyout--slide {
+    transition:
+      background-color var(--_duration) ease-out,
+      display var(--_duration) allow-discrete,
+      overlay var(--_duration) allow-discrete;
+  }
+}
+
+@starting-style {
+  .ngx-flyout--slide[open] {
+    background: transparent;
+  }
+
+  .ngx-flyout--slide[open] .ngx-flyout__panel {
+    transform: translateX(100%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ngx-flyout--slide,
+  .ngx-flyout--slide .ngx-flyout__panel,
+  .ngx-flyout--slide[open] .ngx-flyout__panel {
+    transition: none;
+  }
+}
+
+// Header
+// ------
+
+.ngx-flyout__header {
+  flex: none;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 22px 24px;
+}
+
+.ngx-flyout__icon {
+  flex: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: color-mix(in srgb, var(--_accent) 14%, var(--_bg));
+  color: var(--_accent);
+
+  ::ng-deep svg {
+    width: 22px;
+    height: 22px;
+    display: block;
+  }
+}
+
+.ngx-flyout__titles {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-self: center;
+  overflow-wrap: anywhere;
+}
+
+.ngx-flyout__heading {
+  margin: 0;
+  font-size: 1.1875rem;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--_ink);
+}
+
+.ngx-flyout__subheading {
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.4;
+  color: var(--_muted);
+}
+
+.ngx-flyout__close {
+  flex: none;
+  width: 44px;
+  height: 44px;
+  margin: -8px -10px -8px 0;
+  padding: 0;
+  border: 0;
+  border-radius: var(--_radius);
+  background: transparent;
+  color: var(--_muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+
+  svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  &:hover {
+    background: color-mix(in srgb, var(--_ink) 6%, var(--_bg));
+    color: var(--_ink);
+  }
+}
+
+// Body
+// ----
+
+.ngx-flyout__body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+  padding: 24px;
+  font-size: 0.9375rem;
+  line-height: 1.6;
+}
+
+// Footer
+// ------
+
+.ngx-flyout__footer {
+  flex: none;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 16px 24px;
+  border-top: 1px solid var(--_line);
+}
+
+.ngx-flyout__btn {
+  min-height: 44px;
+  padding: 0 18px;
+  border-radius: var(--_radius);
+  font: inherit;
+  font-size: 0.875rem;
+  line-height: 1.2;
+  cursor: pointer;
+}
+
+.ngx-flyout__btn--secondary {
+  border: 1px solid color-mix(in srgb, var(--_ink) 22%, var(--_bg));
+  background: var(--_bg);
+  color: var(--_ink);
+  font-weight: 500;
+
+  &:hover {
+    background: color-mix(in srgb, var(--_ink) 5%, var(--_bg));
+  }
+}
+
+.ngx-flyout__btn--primary {
+  border: 1px solid var(--_accent);
+  background: var(--_accent);
+  color: var(--_on-accent);
+  font-weight: 600;
+
+  &:hover:not(:disabled) {
+    background: color-mix(in srgb, var(--_accent) 86%, #000000);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.ngx-flyout__close,
+.ngx-flyout__btn {
+  &:focus-visible {
+    outline: 2px solid var(--_accent);
+    outline-offset: 2px;
+  }
+}

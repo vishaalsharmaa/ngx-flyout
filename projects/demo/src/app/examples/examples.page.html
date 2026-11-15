@@ -1,0 +1,279 @@
+<main class="container py-5">
+  <header class="mb-5">
+    <h1 class="display-6 fw-semibold">Examples</h1>
+    <p class="lead text-body-secondary mb-0">
+      Every feature of ngx-flyout, one example each. Open them, try Escape, × and the buttons, and switch to
+      <strong>Code</strong> to copy the source.
+    </p>
+  </header>
+
+  <div class="row g-4">
+    <div class="col-lg-8">
+      <div class="d-flex flex-column gap-4">
+        <!-- 1. Template reference -->
+        <app-example-card heading="1. Template reference" [files]="code.templateRef">
+          <p class="card-text text-body-secondary">
+            Give the flyout a <code>#ref</code> and call <code>open()</code>. Includes a sub-heading.
+          </p>
+          <button type="button" class="btn btn-primary" (click)="details.open()">Open project details</button>
+        </app-example-card>
+
+        <!-- 2. Two-way binding -->
+        <app-example-card heading="2. Two-way binding" [files]="code.twoWay">
+          <p class="card-text text-body-secondary">
+            The parent owns the state with <code>[(opened)]</code>. Escape, × and, with
+            <code>hideOnBackdropClick</code>, a click outside update it too.
+          </p>
+          <div class="d-flex align-items-center gap-3">
+            <button type="button" class="btn btn-primary" (click)="settingsOpen.set(true)">Open settings</button>
+            <span class="badge" [class.text-bg-success]="settingsOpen()" [class.text-bg-secondary]="!settingsOpen()">
+              opened: {{ settingsOpen() }}
+            </span>
+          </div>
+        </app-example-card>
+
+        <!-- 3. Content with its own buttons -->
+        <app-example-card heading="3. Content with its own buttons" [files]="code.ownButtons">
+          <p class="card-text text-body-secondary">
+            A form with Save / Cancel outputs. <code>showFooter="false"</code> hides the built-in buttons and the
+            parent closes the flyout.
+          </p>
+          <button type="button" class="btn btn-primary" (click)="userFlyout.open()">Edit user</button>
+        </app-example-card>
+
+        <!-- 4. Async confirm -->
+        <app-example-card heading="4. Close after saving" [files]="code.asyncSave">
+          <p class="card-text text-body-secondary">
+            <code>closeOnConfirm="false"</code> keeps it open while saving; the parent calls <code>close()</code>.
+            <code>showCloseButton="false"</code> hides the ×.
+          </p>
+          <button type="button" class="btn btn-primary" (click)="asyncFlyout.open()">Rename project</button>
+        </app-example-card>
+
+        <!-- 5. Icon -->
+        <app-example-card heading="5. Icon in the header" [files]="code.icon">
+          <p class="card-text text-body-secondary">
+            Put any icon inside the flyout with <code>ngxFlyoutIcon</code>. It shows in a tile next to the heading.
+          </p>
+          <button type="button" class="btn btn-primary" (click)="iconFlyout.open()">Show deployment</button>
+        </app-example-card>
+
+        <!-- 6. Custom footer -->
+        <app-example-card heading="6. Your own footer" [files]="code.customFooter">
+          <p class="card-text text-body-secondary">
+            Replace the Cancel / OK buttons with anything using <code>ngxFlyoutFooter</code>.
+          </p>
+          <button type="button" class="btn btn-primary" (click)="shareFlyout.open()">Share project</button>
+        </app-example-card>
+
+        <!-- 7. Labels and colour -->
+        <app-example-card heading="7. Button labels and colour" [files]="code.labelsColor">
+          <p class="card-text text-body-secondary">
+            Rename the buttons with <code>confirmLabel</code> / <code>cancelLabel</code> and change the colour with the
+            <code>--ngx-flyout-accent</code> CSS variable.
+          </p>
+          <button type="button" class="btn btn-danger" (click)="deleteFlyout.open()">Delete project</button>
+        </app-example-card>
+
+      <!-- 8. Slide animation -->
+      <app-example-card heading="8. Slide animation" [files]="code.slideAnimation">
+        <p class="card-text text-body-secondary">
+          Add <code>animation="slide"</code> and the flyout slides in from the right and back out on close.
+          Animation is off by default.
+        </p>
+        <div class="form-check form-switch mb-3">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            role="switch"
+            id="slide-toggle"
+            [checked]="slide()"
+            (change)="slide.set(!slide())"
+          />
+          <label class="form-check-label" for="slide-toggle">animation="slide"</label>
+        </div>
+        <button type="button" class="btn btn-primary" (click)="slideFlyout.open()">Open flyout</button>
+      </app-example-card>
+      </div>
+    </div>
+
+    <div class="col-lg-4">
+      <section class="card shadow-sm sticky-lg-top" style="top: 5rem">
+        <div class="card-header bg-body fw-semibold">Event log</div>
+        @if (log().length) {
+          <ul class="list-group list-group-flush">
+            @for (entry of log(); track entry.id) {
+              <li class="list-group-item">
+                <div class="d-flex justify-content-between gap-2">
+                  <span class="fw-semibold">{{ entry.source }}</span>
+                  <span class="text-body-secondary small">{{ entry.time }}</span>
+                </div>
+                <code>{{ entry.event }}</code>
+              </li>
+            }
+          </ul>
+        } @else {
+          <div class="card-body text-body-secondary small">
+            Open a flyout, then confirm or dismiss it. Its events show up here.
+          </div>
+        }
+      </section>
+    </div>
+  </div>
+</main>
+
+<!-- 1. Template reference -->
+<ngx-flyout
+  #details
+  heading="Project details"
+  subheading="acme-web · Last deployed 2 hours ago"
+  confirmLabel="Open project"
+  (confirm)="record('Project details', 'confirm')"
+  (cancel)="onCancel('Project details', $event)"
+>
+  <p>
+    The main web app for Acme. Builds run on every push to <code>main</code> and deploy to production after checks pass.
+  </p>
+  <div class="row g-3 mb-4">
+    <div class="col-6">
+      <div class="border rounded-3 p-3 h-100">
+        <div class="small text-uppercase text-body-secondary">Status</div>
+        <div class="fw-semibold text-success">Healthy</div>
+      </div>
+    </div>
+    <div class="col-6">
+      <div class="border rounded-3 p-3 h-100">
+        <div class="small text-uppercase text-body-secondary">Region</div>
+        <div class="fw-semibold">Mumbai</div>
+      </div>
+    </div>
+  </div>
+  <h3 class="h6">Recent activity</h3>
+  <ul class="list-group mb-4">
+    <li class="list-group-item d-flex justify-content-between"><span>Deployed v2.4.1</span><span class="text-body-secondary small">2h ago</span></li>
+    <li class="list-group-item d-flex justify-content-between"><span>Env variable updated</span><span class="text-body-secondary small">Yesterday</span></li>
+    <li class="list-group-item d-flex justify-content-between"><span>Deployed v2.4.0</span><span class="text-body-secondary small">3 days ago</span></li>
+  </ul>
+  <div class="alert alert-warning mb-0">Rotating the API key will restart all running instances.</div>
+</ngx-flyout>
+
+<!-- 2. Two-way binding -->
+<ngx-flyout
+  [(opened)]="settingsOpen"
+  heading="Settings"
+  hideOnBackdropClick
+  confirmLabel="Apply"
+  (confirm)="record('Settings', 'confirm')"
+  (cancel)="onCancel('Settings', $event)"
+>
+  <div class="form-check form-switch mb-3">
+    <input class="form-check-input" type="checkbox" role="switch" id="setting-email" checked />
+    <label class="form-check-label" for="setting-email">Email me when a deployment fails</label>
+  </div>
+  <div class="form-check form-switch mb-3">
+    <input class="form-check-input" type="checkbox" role="switch" id="setting-weekly" />
+    <label class="form-check-label" for="setting-weekly">Send a weekly summary</label>
+  </div>
+  <p class="text-body-secondary small mb-0">
+    The badge on the page follows <code>opened</code>. This flyout also closes when you click outside it.
+  </p>
+</ngx-flyout>
+
+<!-- 3. Content with its own buttons -->
+<ngx-flyout
+  #userFlyout
+  heading="Edit user"
+  subheading="Changes apply right away"
+  showFooter="false"
+  (cancel)="onCancel('User form', $event)"
+>
+  <app-user-form (saved)="onUserSaved($event, userFlyout)" (cancelled)="onUserCancelled(userFlyout)" />
+</ngx-flyout>
+
+<!-- 4. Async confirm -->
+<ngx-flyout
+  #asyncFlyout
+  heading="Rename project"
+  [confirmLabel]="saving() ? 'Saving…' : 'Save'"
+  [confirmDisabled]="saving()"
+  closeOnConfirm="false"
+  showCloseButton="false"
+  (confirm)="saveSlowly(asyncFlyout)"
+  (cancel)="onCancel('Async save', $event)"
+>
+  <label class="form-label" for="project-name">Project name</label>
+  <input id="project-name" class="form-control" value="acme-web" />
+  <p class="form-text mb-0">Saving takes 1.5 seconds, so you can see the flyout stay open.</p>
+</ngx-flyout>
+
+<!-- 5. Icon -->
+<ngx-flyout
+  #iconFlyout
+  heading="Deployment v2.4.1"
+  subheading="Finished 2 hours ago"
+  confirmLabel="View logs"
+  (confirm)="record('Icon', 'confirm')"
+  (cancel)="onCancel('Icon', $event)"
+>
+  <svg ngxFlyoutIcon viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="12" r="10" />
+    <path d="m8.5 12.5 2.5 2.5 5-5.5" />
+  </svg>
+  <p>All checks passed and the new version is live in production.</p>
+  <ul class="list-group">
+    <li class="list-group-item d-flex justify-content-between"><span>Build</span><span class="text-success">Passed</span></li>
+    <li class="list-group-item d-flex justify-content-between"><span>Tests</span><span class="text-success">Passed</span></li>
+    <li class="list-group-item d-flex justify-content-between"><span>Deploy</span><span class="text-success">Live</span></li>
+  </ul>
+</ngx-flyout>
+
+<!-- 6. Custom footer -->
+<ngx-flyout #shareFlyout heading="Share project" (cancel)="onCancel('Custom footer', $event)">
+  <label class="form-label" for="share-link">Anyone with this link can view the project</label>
+  <input id="share-link" class="form-control" value="https://example.com/p/acme-web" readonly />
+
+  <div ngxFlyoutFooter class="d-flex justify-content-between w-100">
+    <button type="button" class="btn btn-outline-secondary" (click)="record('Custom footer', 'copy link')">Copy link</button>
+    <button type="button" class="btn btn-primary" (click)="record('Custom footer', 'done'); shareFlyout.close()">Done</button>
+  </div>
+</ngx-flyout>
+
+<!-- 7. Labels and colour -->
+<ngx-flyout
+  #deleteFlyout
+  heading="Delete acme-web?"
+  subheading="This can't be undone"
+  confirmLabel="Delete project"
+  cancelLabel="Keep it"
+  style="--ngx-flyout-accent: #dc3545"
+  (confirm)="record('Labels and colour', 'confirm')"
+  (cancel)="onCancel('Labels and colour', $event)"
+>
+  <p>Deleting the project removes its deployments, environment variables and logs.</p>
+  <div class="alert alert-danger mb-0">Nothing is actually deleted in this demo.</div>
+</ngx-flyout>
+
+<!-- 8. Slide animation -->
+<ngx-flyout
+  #slideFlyout
+  heading="Filters"
+  confirmLabel="Apply"
+  [animation]="slide() ? 'slide' : 'none'"
+  (confirm)="record('Slide animation', 'confirm')"
+  (cancel)="onCancel('Slide animation', $event)"
+>
+  <div class="form-check mb-2">
+    <input class="form-check-input" type="checkbox" id="filter-active" checked />
+    <label class="form-check-label" for="filter-active">Active projects only</label>
+  </div>
+  <div class="form-check mb-3">
+    <input class="form-check-input" type="checkbox" id="filter-mine" />
+    <label class="form-check-label" for="filter-mine">Created by me</label>
+  </div>
+  <label class="form-label" for="filter-region">Region</label>
+  <select id="filter-region" class="form-select">
+    <option>All regions</option>
+    <option>Mumbai</option>
+    <option>Frankfurt</option>
+  </select>
+</ngx-flyout>

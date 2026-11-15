@@ -1,0 +1,29 @@
+{
+  "name": "ngx-flyout",
+  "version": "1.0.1",
+  "description": "Accessible side flyout (drawer) for Angular 19+: a heading, your content, and OK / Cancel actions, built on the native dialog element with zero dependencies.",
+  "keywords": [
+    "angular",
+    "ngx",
+    "flyout",
+    "drawer",
+    "side-panel",
+    "sheet",
+    "dialog",
+    "modal",
+    "accessible",
+    "a11y",
+    "standalone",
+    "signals"
+  ],
+  "license": "MIT",
+  "author": "Vishal Sharma",
+  "peerDependencies": {
+    "@angular/common": ">=19.0.0 <22.0.0",
+    "@angular/core": ">=19.0.0 <22.0.0"
+  },
+  "dependencies": {
+    "tslib": "^2.3.0"
+  },
+  "sideEffects": false
+}

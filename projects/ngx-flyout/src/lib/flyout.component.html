@@ -1,0 +1,75 @@
+<dialog
+  #dialog
+  class="ngx-flyout"
+  [class.ngx-flyout--slide]="animation() === 'slide'"
+  [id]="ids().dialog"
+  [attr.aria-labelledby]="heading() ? ids().heading : null"
+  [attr.aria-describedby]="subheading() ? ids().subheading : null"
+  (cancel)="onNativeCancel($event)"
+  (close)="onNativeClose()"
+  (pointerdown)="onPointerDown($event)"
+  (click)="onDialogClick($event)"
+>
+  <div class="ngx-flyout__panel">
+    <header class="ngx-flyout__header">
+      @if (projectedIcon()) {
+        <span class="ngx-flyout__icon" aria-hidden="true">
+          <ng-content select="[ngxFlyoutIcon]" />
+        </span>
+      }
+      <div class="ngx-flyout__titles">
+        @if (heading()) {
+          <h2 class="ngx-flyout__heading" [id]="ids().heading">{{ heading() }}</h2>
+        }
+        @if (subheading()) {
+          <p class="ngx-flyout__subheading" [id]="ids().subheading">{{ subheading() }}</p>
+        }
+      </div>
+      @if (showCloseButton()) {
+        <button
+          type="button"
+          class="ngx-flyout__close"
+          [id]="ids().close"
+          [attr.aria-label]="closeLabel"
+          [attr.title]="closeLabel"
+          (click)="dismiss('close')"
+        >
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            aria-hidden="true"
+            focusable="false"
+          >
+            <path d="M18 6 6 18" />
+            <path d="m6 6 12 12" />
+          </svg>
+        </button>
+      }
+    </header>
+
+    <div class="ngx-flyout__body" [id]="ids().body">
+      <ng-content />
+    </div>
+
+    @if (showFooter()) {
+      <footer class="ngx-flyout__footer">
+        <ng-content select="[ngxFlyoutFooter]">
+          <button type="button" class="ngx-flyout__btn ngx-flyout__btn--secondary" (click)="dismiss('button')">
+            {{ resolvedCancelLabel() }}
+          </button>
+          <button
+            type="button"
+            class="ngx-flyout__btn ngx-flyout__btn--primary"
+            [disabled]="confirmDisabled()"
+            (click)="onConfirm()"
+          >
+            {{ resolvedConfirmLabel() }}
+          </button>
+        </ng-content>
+      </footer>
+    }
+  </div>
+</dialog>
