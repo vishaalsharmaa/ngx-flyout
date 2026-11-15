@@ -20,7 +20,6 @@ export class DocumentationPage {
   protected readonly toc = [
     { id: 'what', label: 'What is a flyout?' },
     { id: 'why-flyout', label: 'Why your product needs one' },
-    { id: 'vs-modal', label: 'Flyout or modal?' },
     { id: 'use-cases', label: 'Use cases' },
     { id: 'why-ngx-flyout', label: 'Why ngx-flyout?' },
     { id: 'getting-started', label: 'Getting started' },

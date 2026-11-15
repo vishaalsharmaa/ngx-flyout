@@ -19,7 +19,6 @@ Think of `<ngx-flyout>` as a side panel that slides over your page: a heading, a
 
 ## Table of contents
 
-- [Why a flyout?](#why-a-flyout)
 - [Features](#features)
 - [Install](#install)
 - [Usage](#usage)
@@ -35,20 +34,6 @@ Think of `<ngx-flyout>` as a side panel that slides over your page: a heading, a
 - [Global configuration](#global-configuration)
 - [Development](#development)
 - [License](#license)
-
-## Why a flyout?
-
-A **modal** is a box in the middle of the screen that asks for a decision right now. A **flyout** is a side panel that helps with the task the user is already doing.
-
-| | Flyout | Modal |
-| --- | --- | --- |
-| Purpose | Helps with the current task | Asks for a decision before going on |
-| The page behind | Stays visible as a reference | Mostly hidden |
-| Amount of content | A lot: details, forms, lists | A little: a question and a couple of buttons |
-| How often | All the time, for everyday tasks | Rarely, for important moments |
-| Good for | Quick views, edit forms, filters, settings, notifications | "Delete this?", warnings, short choices |
-
-Reach for a flyout for longer or everyday interactions. Keep modals short, simple and rare.
 
 ## Features
 
