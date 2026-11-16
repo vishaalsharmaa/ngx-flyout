@@ -17,8 +17,13 @@ Think of `<ngx-flyout>` as a side panel that slides over your page: a heading, a
 </ngx-flyout>
 ```
 
+## Demo
+
+[Open the live demo and playground →](https://vishaalsharmaa.github.io/ngx-flyout/documentation)
+
 ## Table of contents
 
+- [Demo](#demo)
 - [Features](#features)
 - [Install](#install)
 - [Usage](#usage)
