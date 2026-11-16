@@ -2,10 +2,11 @@
 
 **An accessible side flyout for Angular.** A panel that opens from the right, over your app, with a heading, your own content and Cancel / OK buttons, and zero dependencies.
 
-[![npm version](https://img.shields.io/npm/v/ngx-flyout?color=0f6f8c)](https://www.npmjs.com/package/ngx-flyout)
+[![npm version](https://img.shields.io/npm/v/ngx-flyout?color=2f9e44)](https://www.npmjs.com/package/ngx-flyout)
 [![npm downloads](https://img.shields.io/npm/dm/ngx-flyout?color=8250df)](https://www.npmjs.com/package/ngx-flyout)
 [![downloads in the last 18 months](https://img.shields.io/npm/d18m/ngx-flyout?color=12a594)](https://www.npmjs.com/package/ngx-flyout)
-[![license: MIT](https://img.shields.io/npm/l/ngx-flyout?color=1689ad)](https://github.com/vishaalsharmaa/ngx-flyout/blob/main/LICENSE)
+[![license: MIT](https://img.shields.io/github/license/vishaalsharmaa/ngx-flyout?color=1689ad)](https://github.com/vishaalsharmaa/ngx-flyout/blob/main/LICENSE)
+[![live demo](https://img.shields.io/badge/demo-live-d4a017)](https://vishaalsharmaa.github.io/ngx-flyout/documentation)
 
 Think of `<ngx-flyout>` as a side panel that slides over your page: a heading, anything you put inside, and buttons to confirm or cancel. The page behind it stays in view, so users never lose their place.
 
@@ -16,10 +17,6 @@ Think of `<ngx-flyout>` as a side panel that slides over your page: a heading, a
   Anything you put here shows in the flyout.
 </ngx-flyout>
 ```
-
-## Demo
-
-[Open the live demo and playground →](https://vishaalsharmaa.github.io/ngx-flyout/documentation)
 
 ## Table of contents
 
@@ -36,9 +33,18 @@ Think of `<ngx-flyout>` as a side panel that slides over your page: a heading, a
   - [Custom icon and footer](#custom-icon-and-footer)
   - [Slide animation](#slide-animation)
 - [Accessibility](#accessibility)
+- [Theming](#theming)
+  - [CSS variables](#css-variables)
+  - [Dark mode](#dark-mode)
 - [Global configuration](#global-configuration)
 - [Development](#development)
 - [License](#license)
+
+## Demo
+
+**[Open the live demo and playground →](https://vishaalsharmaa.github.io/ngx-flyout/documentation)**
+
+Read the guide, then open working examples, from a quick view to an edit form, each with its source code to copy, on a Bootstrap 5 page.
 
 ## Features
 
@@ -240,6 +246,54 @@ With `id="edit-user"`, the flyout renders:
 - Escape closes it, and page scrolling is locked while it is open.
 - All buttons are at least 44px tall.
 - All screen-reader and button text can be translated with [global configuration](#global-configuration).
+
+## Theming
+
+### CSS variables
+
+Theme every flyout from CSS, with no Sass or theme files:
+
+```css
+:root {
+  --ngx-flyout-accent: #6f42c1;
+  --ngx-flyout-width: 520px;
+}
+```
+
+To theme a single flyout, set the variables inline: `<ngx-flyout style="--ngx-flyout-accent: #dc3545">`.
+
+| Variable | Default | Controls |
+| --- | --- | --- |
+| `--ngx-flyout-accent` | `#0f6f8c` | Primary button and icon tile |
+| `--ngx-flyout-on-accent` | `#ffffff` | Text on the primary button |
+| `--ngx-flyout-bg` | `#ffffff` | Panel background |
+| `--ngx-flyout-ink` | `#1b2230` | Text colour |
+| `--ngx-flyout-muted` | 72% ink on the background | Sub-heading and × colour |
+| `--ngx-flyout-border` | 12% ink on the background | Divider lines |
+| `--ngx-flyout-backdrop` | `rgba(15, 23, 42, 0.45)` | Layer over your app |
+| `--ngx-flyout-width` | `440px` | Panel width, never wider than the screen |
+| `--ngx-flyout-radius` | `8px` | Button corners |
+| `--ngx-flyout-duration` | `280ms` | Slide speed, when `animation="slide"` |
+
+### Dark mode
+
+Set your dark theme's background and text colours, and the greys and lines follow:
+
+```css
+.dark-theme {
+  --ngx-flyout-bg: #11151c;
+  --ngx-flyout-ink: #e4e8f0;
+}
+```
+
+With Bootstrap 5.3, map them to Bootstrap's own variables once and flyouts follow `data-bs-theme` automatically:
+
+```css
+:root {
+  --ngx-flyout-bg: var(--bs-body-bg);
+  --ngx-flyout-ink: var(--bs-body-color);
+}
+```
 
 ## Global configuration
 
