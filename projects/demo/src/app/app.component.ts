@@ -1,5 +1,5 @@
 import { ViewportScroller } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import libPackage from '../../../ngx-flyout/package.json';
 
@@ -9,7 +9,7 @@ import libPackage from '../../../ngx-flyout/package.json';
   imports: [RouterOutlet, RouterLink, RouterLinkActive],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <nav class="navbar navbar-expand bg-body border-bottom sticky-top">
+    <nav class="navbar navbar-expand app-navbar border-bottom shadow-sm sticky-top" data-bs-theme="dark">
       <div class="container">
         <a class="navbar-brand fw-semibold" routerLink="/documentation">ngx-flyout</a>
         <ul class="navbar-nav me-auto">
@@ -26,10 +26,23 @@ import libPackage from '../../../ngx-flyout/package.json';
           </li>
         </ul>
 
+        <!-- Install command (hidden on small and medium screens) -->
+        <div class="d-none d-lg-flex align-items-center gap-2 border rounded-3 bg-body-tertiary ps-3 pe-1 py-1 me-2">
+          <code class="text-body-secondary small">{{ installCommand }}</code>
+          <button
+            type="button"
+            class="btn btn-sm btn-link text-body fw-semibold text-decoration-none"
+            (click)="copyInstall()"
+            [attr.aria-label]="'Copy ' + installCommand"
+          >
+            {{ installCopied() ? 'Copied' : 'Copy' }}
+          </button>
+        </div>
+
         <!-- Links -->
         <div class="d-flex align-items-center gap-2 flex-shrink-0">
           <a
-            class="btn btn-outline-secondary btn-sm d-inline-flex align-items-center gap-1"
+            class="btn btn-light btn-sm d-inline-flex align-items-center gap-1"
             href="https://github.com/vishaalsharmaa/ngx-flyout"
             target="_blank"
             rel="noopener"
@@ -43,13 +56,19 @@ import libPackage from '../../../ngx-flyout/package.json';
             <span class="d-none d-sm-inline">GitHub</span>
           </a>
           <a
-            class="btn btn-outline-secondary btn-sm"
+            class="btn btn-light btn-sm d-inline-flex align-items-center"
             href="https://www.npmjs.com/package/ngx-flyout"
             target="_blank"
             rel="noopener"
             aria-label="npm"
           >
-            npm
+            <!-- npm logo, cropped from its 128×128 box to the wordmark itself -->
+            <svg height="16" viewBox="2 38.5 124 51" aria-hidden="true">
+              <path
+                fill="#cb3837"
+                d="M2 38.5h124v43.71H64v7.29H36.44v-7.29H2zm6.89 36.43h13.78V53.07h6.89v21.86h6.89V45.79H8.89zm34.44-29.14v36.42h13.78v-7.28h13.78V45.79zm13.78 7.29H64v14.56h-6.89zm20.67-7.29v29.14h13.78V53.07h6.89v21.86h6.89V53.07h6.89v21.86h6.89V45.79z"
+              />
+            </svg>
           </a>
         </div>
       </div>
@@ -77,8 +96,23 @@ export class AppComponent {
   /** Library version, read from projects/ngx-flyout/package.json. */
   protected readonly version = libPackage.version;
 
+  /** Shown in the navbar with a Copy button. */
+  protected readonly installCommand = 'npm i ngx-flyout';
+  protected readonly installCopied = signal(false);
+
   constructor() {
     // Keep #section links from scrolling under the sticky navbar.
     inject(ViewportScroller).setOffset([0, 72]);
+  }
+
+  /** Copies the install command and shows "Copied" on the button for 1.5 seconds. */
+  protected async copyInstall(): Promise<void> {
+    try {
+      await navigator.clipboard.writeText(this.installCommand);
+      this.installCopied.set(true);
+      setTimeout(() => this.installCopied.set(false), 1500);
+    } catch {
+      this.installCopied.set(false);
+    }
   }
 }
