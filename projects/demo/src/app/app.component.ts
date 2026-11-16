@@ -42,8 +42,15 @@ import libPackage from '../../../ngx-flyout/package.json';
             </svg>
             <span class="d-none d-sm-inline">GitHub</span>
           </a>
-          <!-- TODO: link to https://www.npmjs.com/package/ngx-flyout once it is published -->
-          <button type="button" class="btn btn-outline-secondary btn-sm">npm</button>
+          <a
+            class="btn btn-outline-secondary btn-sm"
+            href="https://www.npmjs.com/package/ngx-flyout"
+            target="_blank"
+            rel="noopener"
+            aria-label="npm"
+          >
+            npm
+          </a>
         </div>
       </div>
     </nav>
